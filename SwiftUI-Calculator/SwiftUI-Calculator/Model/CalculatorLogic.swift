@@ -6,7 +6,7 @@
 //  Copyright © 2020 Priscilla Ip. All rights reserved.
 //
 
-import UIKit
+import SwiftUI
 
 struct CalculatorLogic {
     
