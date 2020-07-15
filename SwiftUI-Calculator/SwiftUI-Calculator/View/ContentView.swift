@@ -64,10 +64,51 @@ enum CalculatorButton: String {
 // Global Application State
 class GlobalEnvironment: ObservableObject {
     
-    @Published var display = ""
+    @Published var display = "0"
+    
+    private var isFinishedTypingNumber: Bool = true
+    
+    private var displayValue: Double {
+        get {
+            guard let number = Double(self.display) else { fatalError("Cannot convert display label text to a Double") }
+            return number
+        }
+        set {
+            self.display = newValue.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", newValue) : String(newValue)
+        }
+    }
+    
+    private var calculator = CalculatorLogic()
     
     func receiveInput(calculatorButton: CalculatorButton) {
-        self.display = calculatorButton.title
+        
+        switch calculatorButton {
+        case .ac, .plusMinus, .percent, .divide, .multiply, .minus, .plus, .equals:
+            
+            isFinishedTypingNumber = true
+            
+            calculator.setNumber(displayValue)
+
+            if let result = calculator.calculate(symbol: calculatorButton) {
+                displayValue = result
+            }
+
+        default:
+            
+            if isFinishedTypingNumber {
+                self.display = calculatorButton.title
+                isFinishedTypingNumber = false
+            } else {
+                
+                if calculatorButton == .decimal {
+                    // check if number already has a decimal
+                    let isInt = floor(displayValue) == displayValue
+                    if !isInt { return }
+                }
+                self.display = self.display + calculatorButton.title
+            }
+        }
+        
     }
     
 }
@@ -97,6 +138,8 @@ struct ContentView: View {
                     Spacer()
                     Text(env.display).foregroundColor(.white)
                         .font(.system(size: 90))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.7)
                 }.padding()
                 
                 ForEach(buttons, id: \.self) { row in
@@ -140,6 +183,11 @@ struct CalculatorButtonView: View {
         return (UIScreen.main.bounds.width - 5 * self.spacing)  / 4
     }
 }
+
+
+
+
+
 
 
 
