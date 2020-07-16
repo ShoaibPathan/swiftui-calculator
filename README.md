@@ -1,6 +1,6 @@
 # swiftui-calculator
 
-A simple calculator app using SwiftUI.
+A simple calculator app built using SwiftUI.
 
 <img src="https://github.com/mcipswitch/swiftui-calculator/blob/master/screenshot.png" width="250">
 
