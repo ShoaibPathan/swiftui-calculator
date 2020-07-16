@@ -12,13 +12,12 @@ struct CalculatorLogic {
     
     private var number: Double?
     
-    var previousValue: Double?
-    var currentNumber: Double?
-    var activeOperation: CalculatorButton?
-    var calculatedValue: Double = 0
-    
-    
-    private var intermediateCalculation: (n1: Double, calcMethod: CalculatorButton)?
+    private var previousValue: Double?
+    private var currentNumber: Double?
+    private var activeOperation: CalculatorButton?
+    private var calculatedValue: Double = 0
+
+    //private var intermediateCalculation: (n1: Double, calcMethod: CalculatorButton)?
     
     mutating func setNumber(_ number: Double) {
         self.number = number
@@ -31,6 +30,8 @@ struct CalculatorLogic {
         return 0
     }
     
+    private var lastInputEqual = false
+    
     mutating func calculate(symbol: CalculatorButton) -> Double? {
         
         if let number = number {
@@ -42,7 +43,10 @@ struct CalculatorLogic {
                 return resetCalculator()
             case .percent:
                 return number * 0.01
+                
             case .equals:
+                
+                lastInputEqual = true
                 
                 if let previousValue = previousValue {
                     
@@ -55,11 +59,24 @@ struct CalculatorLogic {
                 }
                 
             default:
+                
+                if lastInputEqual {
+                    lastInputEqual = false
+                    previousValue = nil
+                }
 
+                if let previousValue = previousValue {
+                    let result = performCalculation(previousValue: previousValue, currentNumber: number)
+                    activeOperation = symbol
+                    return result
+                }
+                
                 activeOperation = symbol
+                currentNumber = nil
                 previousValue = previousValue != nil ? previousValue : number
             }
         }
+        
         return nil
     }
     
@@ -68,9 +85,9 @@ struct CalculatorLogic {
         
         if let operation = activeOperation {
             switch operation {
-            case .plus:
+            case .add:
                 calculatedValue = previousValue + currentNumber
-            case .minus:
+            case .subtract:
                 calculatedValue = previousValue - currentNumber
             case .multiply:
                 calculatedValue = previousValue * currentNumber
@@ -84,7 +101,6 @@ struct CalculatorLogic {
         
         self.previousValue = calculatedValue
         return calculatedValue
-        
     }
     
     

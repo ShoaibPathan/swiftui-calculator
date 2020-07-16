@@ -18,7 +18,7 @@ extension Double {
 enum CalculatorButton: String {
     
     case zero, one, two, three, four, five, six, seven, eight, nine, decimal
-    case equals, plus, minus, multiply, divide
+    case equals, add, subtract, multiply, divide
     case ac, plusMinus, percent
     
     var title: String {
@@ -33,8 +33,8 @@ enum CalculatorButton: String {
         case .seven: return "7"
         case .eight: return "8"
         case .nine: return "9"
-        case .plus: return "+"
-        case .minus: return "-"
+        case .add: return "+"
+        case .subtract: return "-"
         case .multiply: return "×"
         case .divide: return "÷"
         case .plusMinus: return "±"
@@ -96,14 +96,28 @@ class GlobalEnvironment: ObservableObject {
     
     private var calculator = CalculatorLogic()
     
+    
+    private var lastInput: CalculatorButton?
+    
+    
+    private func isLastInputOperator() -> Bool {
+        guard let lastInput = lastInput else { return false }
+            return lastInput == .divide || lastInput == .multiply || lastInput == .add || lastInput == .subtract
+    }
+    
+    
+    
     func receiveInput(calculatorButton: CalculatorButton) {
-        
+
         switch calculatorButton {
-        case .ac, .plusMinus, .percent, .divide, .multiply, .minus, .plus, .equals:
+        case .ac, .plusMinus, .percent, .divide, .multiply, .subtract, .add, .equals:
+            
+            // check for two consecutive operators
+            if isLastInputOperator() { break }
             
             isFinishedTypingNumber = true
             
-            calculator.setNumber(displayValue)
+            calculator.setNumber(displayValue) 
 
             if let result = calculator.calculate(symbol: calculatorButton) {
                 displayValue = result
@@ -136,6 +150,9 @@ class GlobalEnvironment: ObservableObject {
                 self.display = self.display + calculatorButton.title
             }
         }
+        
+        
+        lastInput = calculatorButton
     }
     
 }
@@ -151,8 +168,8 @@ struct ContentView: View {
     let buttons: [[CalculatorButton]] = [
         [.ac, .plusMinus, .percent, .divide],
         [.seven, .eight, .nine, .multiply],
-        [.four, .five, .six, .minus],
-        [.one, .two, .three, .plus],
+        [.four, .five, .six, .subtract],
+        [.one, .two, .three, .add],
         [.zero, .decimal, .equals]
     ]
 
