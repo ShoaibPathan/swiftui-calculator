@@ -8,6 +8,13 @@
 
 import SwiftUI
 
+extension Double {
+    func roundTo(places: Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (self * divisor).rounded() / divisor
+    }
+}
+
 enum CalculatorButton: String {
     
     case zero, one, two, three, four, five, six, seven, eight, nine, decimal
@@ -97,7 +104,7 @@ class GlobalEnvironment: ObservableObject {
             isFinishedTypingNumber = true
             
             calculator.setNumber(displayValue)
-            
+
             if let result = calculator.calculate(symbol: calculatorButton) {
                 displayValue = result
             }
@@ -211,7 +218,7 @@ struct CalculatorButtonView: View {
         }) {
             Text(button.title)
                 .font(.system(size: button.size))
-                .fontWeight(.semibold)
+                .fontWeight(.regular)
                 .frame(width: self.buttonWidth(button: button), height: (screenWidth - 5 * self.spacing)  / 4)
                 .foregroundColor(button.textColor)
                 .background(button.backgroundColor)
@@ -226,18 +233,6 @@ struct CalculatorButtonView: View {
         return (screenWidth - 5 * self.spacing)  / 4
     }
 }
-
-
-
- 
-
-
-
-
-
-
-
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
