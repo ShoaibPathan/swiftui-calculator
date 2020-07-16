@@ -16,7 +16,6 @@ extension Double {
 }
 
 enum CalculatorButton: String {
-    
     case zero, one, two, three, four, five, six, seven, eight, nine, decimal
     case equals, add, subtract, multiply, divide
     case ac, plusMinus, percent
@@ -76,13 +75,16 @@ enum CalculatorButton: String {
     }
 }
 
-// Env object
-// Global Application State
+//MARK: - Global Application State
+
 class GlobalEnvironment: ObservableObject {
     
     @Published var display = "0"
     
+    //MARK: - Variables and Properties
+    
     private var isFinishedTypingNumber: Bool = true
+    private var lastInput: CalculatorButton?
     
     private var displayValue: Double {
         get {
@@ -93,19 +95,15 @@ class GlobalEnvironment: ObservableObject {
             self.display = newValue.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", newValue) : String(newValue)
         }
     }
-    
+
     private var calculator = CalculatorLogic()
     
-    
-    private var lastInput: CalculatorButton?
-    
+    //MARK: - Internal Methods
     
     private func isLastInputOperator() -> Bool {
         guard let lastInput = lastInput else { return false }
             return lastInput == .divide || lastInput == .multiply || lastInput == .add || lastInput == .subtract
     }
-    
-    
     
     func receiveInput(calculatorButton: CalculatorButton) {
 
@@ -140,7 +138,7 @@ class GlobalEnvironment: ObservableObject {
                 
                 if calculatorButton == .decimal {
                     
-                    // check if number is whole with decimal
+                    // check if number is whole number
                     if self.display.contains(".") { return }
 
                     // check if number already has a decimal
@@ -150,12 +148,11 @@ class GlobalEnvironment: ObservableObject {
                 self.display = self.display + calculatorButton.title
             }
         }
-        
-        
         lastInput = calculatorButton
     }
-    
 }
+
+//MARK: - ContentView
 
 struct ContentView: View {
     
@@ -201,24 +198,7 @@ struct ContentView: View {
     }
 }
 
-//struct CalculatorButtonStyle: ButtonStyle {
-//
-//    var button: CalculatorButton
-//
-//    func makeBody(configuration: Configuration) -> some View {
-//        configuration.label
-//            .background(configuration.isPressed ? Color.init(.sRGB, white: 1, opacity: 0.80) : button.backgroundColor)
-//        .cornerRadius(self.buttonWidth(button: button))
-//
-//    }
-//
-//    private func buttonWidth(button: CalculatorButton) -> CGFloat {
-//        if button == .zero {
-//            return (UIScreen.main.bounds.width - 4 * 16)  / 4 * 2
-//        }
-//        return (UIScreen.main.bounds.width - 5 * 16)  / 4
-//    }
-//}
+//MARK: - SubViews
 
 struct CalculatorButtonView: View {
     
@@ -250,6 +230,8 @@ struct CalculatorButtonView: View {
         return (screenWidth - 5 * self.spacing)  / 4
     }
 }
+
+//MARK: - Previews
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
