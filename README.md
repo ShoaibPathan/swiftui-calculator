@@ -1,16 +1,20 @@
-# swiftui-calculator
+# SwiftUICalculator
 
-> A simple calculator app built with SwiftUI
+A simple calculator app built with SwiftUI.
 
 # Project Status
 
-> I built this app to practice SwiftUI and its layout system. The calculator functions and permits operation chaining, but in future versions I would love to upgrade this to an order of operations calculator.
+The calculator does basic arithmetic functions and permits operation chaining.
 
 # Screenshots
 
-<img src="https://github.com/mcipswitch/swiftui-calculator/blob/master/screenshot.png" width="250">
+<img src="https://github.com/mcipswitch/swiftui-calculator/blob/master/screenshot.png" width="200">
 
-# Features To Add
+# Reflection
+
+I built this app to practice SwiftUI and its layout system. The calculator functions, but in future versions I would love to upgrade this to an order of operations calculator.
+
+Things to do:
 
 * order of operations calculation
 * limit character count and remove all ellipses
