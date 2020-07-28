@@ -8,7 +8,7 @@ The calculator does basic arithmetic functions and permits operation chaining.
 
 # Screenshots
 
-<img src="https://github.com/mcipswitch/swiftui-calculator/blob/master/screenshot.png" width="200">
+<img src="https://github.com/mcipswitch/swiftui-calculator/blob/master/screenshot.png" width="250">
 
 # Reflection
 
