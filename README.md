@@ -1,6 +1,6 @@
 # SwiftUICalculator
 
-An easy to use recreation of the Apple's system calculator app written in SwiftUI.
+A recreation of the Apple's system calculator app that does basic arithmetic functions written in SwiftUI.
 
 # Project Status
 
