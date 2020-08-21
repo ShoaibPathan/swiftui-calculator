@@ -2,15 +2,15 @@
 
 A recreation of the Apple's system calculator app that does basic arithmetic functions written in SwiftUI.
 
-# Project Status
+## Project Status
 
 The calculator does basic arithmetic functions and permits operation chaining.
 
-# Screenshots
+## Screenshots
 
 <img src="https://github.com/mcipswitch/swiftui-calculator/blob/master/screenshot.png" width="250">
 
-# Reflection
+## Reflection
 
 I built this app to practice SwiftUI and its layout system. The calculator functions, but in future versions I would love to upgrade this to an order of operations calculator.
 
